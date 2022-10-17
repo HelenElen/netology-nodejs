@@ -1,0 +1,31 @@
+const rl = require('readline');
+const input = rl.createInterface(process.stdin, process.stdout);
+
+let max = 100;
+let min = 0;
+let randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+
+console.log(randomNumber);
+const question = function (q) {
+  return new Promise((res, rej) => {
+    input.question(q, (answer) => {
+      res(answer);
+    });
+  });
+};
+
+(async function main() {
+  console.log('Программа загадала число от 0 до 100, попробуй отгадай :)');
+  let answer = Number(await question('Первая попытка: '));
+  while (answer !== randomNumber) {
+    if (answer > randomNumber) {
+      answer = await question('Меньше: ');
+    } else if (answer < randomNumber) {
+      answer = await question('Больше: ');
+    } else {
+      console.log('Молодец! Число отгадано!');
+      break;
+    }
+  }
+  input.close();
+})();
